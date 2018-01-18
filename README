@@ -1,0 +1,88 @@
+==================================
+==                              ==
+== Task Partitioning Controller ==
+==                              ==
+==================================
+
+DATE: 18/01/2018
+
+*** INTRODUCTION ***
+
+In this package you'll find the controller for the Dynamic Task
+Partitioning strategy for the foot-bot robot platform.
+
+To run an experiment with ARGoS, you need to define three things:
+1. the robot controller
+2. the experiment configuration
+3. the loop function
+
+You find the controller in the controllers/directory. The
+experiment configuration files are located in the experiments/
+directory. The loop functions in the loop_functions/directory
+
+TASK PARTITIONING CONTROLLER
+
+In this experiment, psi-swarm robots are doing foraging 
+and the task can be decomposed into multiple smaller subtasks
+if specified in the experiment configuration
+
+*** COMPILATION ***
+
+To compile the controller, open up a shell, go to the directory where 
+you unpacked the tar.bz2 file and type:
+
+$ mkdir build
+$ cd build
+
+To produce debuggable code (slow), type:
+
+$ cmake -DCMAKE_BUILD_TYPE=Debug ..
+
+To produce fast but not debuggable code, type:
+
+$ cmake -DCMAKE_BUILD_TYPE=Release ..
+
+Finally, launch the compilation with the command:
+
+$ make
+
+If you find no error, you're ready to go to the next phase.
+
+*** TROUBLESHOOTING ***
+
+When you launch one of the two 'cmake' commands, you might get an
+error like 'package argos3_simulator' not found. This error has two
+possible causes:
+
+1. You haven't installed ARGoS3 system-wide. To fix this, install
+   ARGoS3 through the packages or with the command 'sudo make install'
+   in the ARGoS3 build directory.
+
+2. pkg-config can't find the file argos3_simulator.pc. When you
+   install ARGoS3 from a package, this file is located in
+   /usr/lib/pkgconfig/. When you install ARGoS3 from the sources, this
+   file is located in $CMAKE_INSTALL_PREFIX/lib/pkgconfig/. If you
+   don't set $CMAKE_INSTALL_PREFIX explicitly before compiling, by
+   default it is set to /usr/local.  If the file is present and
+   pkg-config can't find it, add the directory where it's located to
+   the environment variable PKG_CONFIG_PATH, e.g.
+
+$ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig/
+
+
+*** RUNNING AN EXPERIMENT ***
+
+To run an experiment, the configuration files have been written with the
+hypothesis that you run them in the directory where you unpacked the
+tar.bz2, NOT in the build/ directory. Therefore, go to that directory
+and type:
+
+$ argos3 -c experiments/psiswarm_dps.argos
+
+*** IMPORTANT ***
+
+This controller works fine with versions of ARGoS from 3.0.0-beta36 to
+3.0.0-beta38. For ARGoS 3.0.0-beta39 there is a segmentation fault that
+can be avoided by disabling the qt_user_function in the experiment 
+configuration file. For versions beyond of 3.0.0-beta39 this controller 
+has not been tested. 
